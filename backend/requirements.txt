@@ -1,0 +1,15 @@
+psycopg2-binary
+datetime
+typing
+dataclasses
+asyncio
+asyncpg
+environs
+aiohttp
+requests
+parsel
+loguru
+redis
+sqlalchemy
+mongoengine
+playwright
