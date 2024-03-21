@@ -3,11 +3,13 @@ import "./Header.css";
 
 
 const Header = () => {
+    const href = window.location.href.split("/");
+    const current_page = href[href.length - 1];
     return (
         <div className="navbar">
-            <a className="active" href="#home">All cars table</a>
-            <a href="#about">About</a>
-            <a href="#contact">Contact</a>
+            <a className={current_page === "" ? "active" : ""} href="/">All cars table</a>
+            <a className={current_page === "about" ? "active" : ""} href="/about">About</a>
+            <a className={current_page === "contact" ? "active" : ""} href="/contact">Contact</a>
         </div>
     )
 }

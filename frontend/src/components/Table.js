@@ -1,64 +1,62 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
-import ImagePreview from "./ImagePreview";
+import fetchData from "./getData";
+import Cars from "./Cars";
+import Pagination from "./Pagination";
+import SelectPageLimit from "./SelectPageLimit";
 import "./Table.css";
-
-
-const getFormattedDate = (dateStr) => {
-    const date = new Date(dateStr);
-    return date.toLocaleString();
-}
 
 
 const Table = () => {
     const [cars, setCars] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [carsPerPage] = useState(10);
 
-    useEffect(
-        () => {
-            axios.get("http://127.0.0.1:8000/cars")
-            .then(response => {
-                setCars(response.data);
-            })
-            .catch((ex) => console.log("Error fetching data:", ex));
+    const url = "http://127.0.0.1:8000/cars";
+
+    useEffect(() => {
+        fetchData(url, setLoading, setCars)
     }, [])
 
+    const lastCarIndex = currentPage * carsPerPage;
+    const firstCarIndex = lastCarIndex - carsPerPage;
+    const currentCar = cars.slice(firstCarIndex, lastCarIndex)
+
+    const paginate = (pageNumber) => {
+        setCurrentPage(pageNumber)
+    }
+
+    const nextPage = () => {
+        setCurrentPage( prev => prev + 1 )
+    }
+
+    const prevPage = () => {
+        setCurrentPage( prev => prev - 1 )
+    }
+
     return (
-        <table>
-            <thead>
-                <tr className="head">
-                    <th>ID</th>
-                    <th>Title</th>
-                    <th>Price, USD</th>
-                    <th>Odometer</th>
-                    <th>Car Number</th>
-                    <th>Car VIN</th>
-                    <th>Seller Username</th>
-                    <th>Phone Number</th>
-                    <th>Image url</th>
-                    <th>Images count</th>
-                    <th>Date and Time found</th>
-                </tr>
-            </thead>
-            <tbody>
-                { cars.map((car) => {
-                    return (
-                        <tr key={ car.id }>
-                            <td>{ car.id }</td>
-                            <td><a href={ car.url }>{ car.title }</a></td>
-                            <td>{ car.price_usd }</td>
-                            <td>{ car.odometer }</td>
-                            <td>{ car.car_number }</td>
-                            <td>{ car.car_vin }</td>
-                            <td>{ car.username }</td>
-                            <td>{ car.phone_number }</td>
-                            <ImagePreview image_url={ car.image_url } />
-                            <td>{ car.images_count }</td>
-                            <td>{ getFormattedDate(car.datetime_found) }</td>
-                        </tr>
-                    )
-                }) }
-            </tbody>
-        </table>
+        <div>
+            <SelectPageLimit />
+            <table>
+                <thead>
+                    <tr className="head">
+                        <th>ID</th>
+                        <th>Title</th>
+                        <th>Price, USD</th>
+                        <th>Odometer</th>
+                        <th>Car Number</th>
+                        <th>Car VIN</th>
+                        <th>Seller Username</th>
+                        <th>Phone Number</th>
+                        <th>Image url</th>
+                        <th>Images count</th>
+                        <th>Date and Time found</th>
+                    </tr>
+                </thead>
+                <Cars cars={ currentCar } loading={ loading } />
+            </table>
+            <Pagination carsPerPage={carsPerPage} totalCars={cars.length} paginate={paginate} nextPage={nextPage} prevPage={prevPage} currentPage={currentPage} />
+        </div>
     )
 }
 
