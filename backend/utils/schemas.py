@@ -1,5 +1,6 @@
 from pydantic import BaseModel
 from datetime import datetime
+from typing import Optional
 
 
 class CarBase(BaseModel):
@@ -9,9 +10,9 @@ class CarBase(BaseModel):
     odometer: float
     username: str
     phone_number: str
-    image_url: str
+    image_url: Optional[str]
     images_count: int
-    car_number: str
+    car_number: Optional[str]
     car_vin: str
     datetime_found: datetime
 
@@ -24,7 +25,7 @@ class Car(CarBase):
     id: int
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 
 class TaskCreate(BaseModel):
@@ -38,7 +39,7 @@ class Task(BaseModel):
     completed: bool
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 
 class ResultCreate(BaseModel):
@@ -49,3 +50,6 @@ class ResultCreate(BaseModel):
 class Result(BaseModel):
     task_id: int
     car: CarCreate
+
+    class Config:
+        from_attributes = True

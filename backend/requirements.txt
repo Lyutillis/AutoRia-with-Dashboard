@@ -13,3 +13,4 @@ redis
 sqlalchemy
 mongoengine
 playwright
+fastapi

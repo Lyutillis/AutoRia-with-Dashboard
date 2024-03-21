@@ -1,4 +1,5 @@
 from pydantic.v1 import BaseSettings
+from typing import ClassVar
 
 
 class Settings(BaseSettings):

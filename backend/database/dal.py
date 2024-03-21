@@ -30,6 +30,7 @@ class CarDAL(DAL):
     def get_all_cars(self) -> List[schemas.Car]:
         return [
             schemas.Car(
+                id=car.id,
                 url=car.url,
                 title=car.title,
                 price_usd=car.price_usd,
