@@ -10,7 +10,7 @@ const Table = () => {
     const [cars, setCars] = useState([]);
     const [loading, setLoading] = useState(false);
     const [currentPage, setCurrentPage] = useState(1);
-    const [carsPerPage] = useState(10);
+    const [carsPerPage, setCarsPerPage] = useState(10);
 
     const url = "http://127.0.0.1:8000/cars";
 
@@ -22,21 +22,11 @@ const Table = () => {
     const firstCarIndex = lastCarIndex - carsPerPage;
     const currentCar = cars.slice(firstCarIndex, lastCarIndex)
 
-    const paginate = (pageNumber) => {
-        setCurrentPage(pageNumber)
-    }
-
-    const nextPage = () => {
-        setCurrentPage( prev => prev + 1 )
-    }
-
-    const prevPage = () => {
-        setCurrentPage( prev => prev - 1 )
-    }
-
     return (
         <div>
-            <SelectPageLimit />
+            <div className="controls">
+                <SelectPageLimit setCarsPerPage={ setCarsPerPage } />
+            </div>
             <table>
                 <thead>
                     <tr className="head">
@@ -55,7 +45,7 @@ const Table = () => {
                 </thead>
                 <Cars cars={ currentCar } loading={ loading } />
             </table>
-            <Pagination carsPerPage={carsPerPage} totalCars={cars.length} paginate={paginate} nextPage={nextPage} prevPage={prevPage} currentPage={currentPage} />
+            <Pagination carsPerPage={carsPerPage} totalCars={cars.length} setCurrentPage={setCurrentPage} currentPage={currentPage} />
         </div>
     )
 }

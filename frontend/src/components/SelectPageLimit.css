@@ -1,27 +1,12 @@
 .select-box {
   position: relative;
   display: block;
-  width: 100%;
-  margin: 0 auto;
+  width: 10%;
   font-family: "Open Sans", "Helvetica Neue", "Segoe UI", "Calibri", "Arial", sans-serif;
   font-size: 18px;
-  color: #60666d;
+  color: black;
 }
-@media (min-width: 768px) {
-  .select-box {
-    width: 70%;
-  }
-}
-@media (min-width: 992px) {
-  .select-box {
-    width: 50%;
-  }
-}
-@media (min-width: 1200px) {
-  .select-box {
-    width: 30%;
-  }
-}
+
 .select-box__current {
   position: relative;
   box-shadow: 0 15px 30px -10px rgba(0, 0, 0, 0.1);
@@ -81,6 +66,7 @@
   -webkit-animation-timing-function: step-start;
           animation-timing-function: step-start;
   box-shadow: 0 15px 30px -10px rgba(0, 0, 0, 0.1);
+  z-index: 9;
 }
 .select-box__option {
   display: block;
