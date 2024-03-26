@@ -11,7 +11,15 @@ const getFormattedDate = (dateStr) => {
 const Cars = ({ cars, loading }) => {
     
     if (loading) {
-        return <h1>Loading...</h1>
+        return (
+            <tbody>
+                <tr>
+                    <td>
+                        <h1>Loading...</h1>
+                    </td>
+                </tr>
+            </tbody>
+        )
     }
 
     return (

@@ -1,43 +1,85 @@
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 
-const Pagination = ({ carsPerPage, totalCars, paginate, nextPage, prevPage, currentPage }) => {
+const Pagination = ({ carsPerPage, totalCars, setCurrentPage, currentPage }) => {
+    const [rightMost, setRightMost] = useState(0)
+    const [leftMost, setLeftMost] = useState(Math.ceil(totalCars / carsPerPage))
     const pageNumbers = [];
+    const pageLimit = 9;
 
     for (let i = 1; i <= Math.ceil(totalCars / carsPerPage); i++) {
         pageNumbers.push(i);
     }
     
+    const paginate = (pageNumber) => {
+        setCurrentPage(pageNumber)
+    }
+
+    const nextPage = () => {
+        setCurrentPage( prev => prev + 1 )
+    }
+
+    const prevPage = () => {
+        setCurrentPage( prev => prev - 1 )
+    }
+
+    const firstPage = () => {
+        setCurrentPage( 1 )
+    }
+
+    const lastPage = () => {
+        setCurrentPage( pageNumbers[pageNumbers.length - 1] )
+    }
+
+    useEffect(
+        () => {
+            setRightMost(currentPage <= Math.ceil(pageLimit/2) ? 0 : currentPage - Math.ceil(pageLimit/2));
+            setLeftMost(currentPage <= Math.ceil(pageLimit/2) ? pageLimit : currentPage + Math.floor(pageLimit/2));
+        }
+    , [currentPage])
+    
     return (
-        <div className='justify-content-center my-4'>
-            <ul className='pagination justify-content-center'>
-                <li className={currentPage===1  ? "page-item disabled":"page-item"}>
-                    <button 
-                        className='btn page-link'
-                        onClick={prevPage}
-                    >
-                        Previous
-                    </button>
-                </li>
+        <div className='text-center my-5'>
+            <div className="btn-group" role="group">
+                <button
+                    type="button"
+                    onClick={firstPage}
+                    className={
+                        currentPage===1  ? "btn btn-outline-primary disabled" : "btn btn-outline-primary" }
+                >
+                    First
+                </button>
+                <button
+                    type="button"
+                    onClick={prevPage}
+                    className={
+                        currentPage===1  ? "btn btn-outline-primary disabled" : "btn btn-outline-primary" }
+                >
+                    Previous
+                </button>
                 {
-                    pageNumbers.map(number => (
-                        <li className='page-item' key={number}>
-                            <button className='btn page-link' onClick={() => paginate(number)}>
+                    pageNumbers.slice(rightMost, leftMost).map(number => (
+                            <button type="button" className={number === currentPage ? "btn btn-outline-primary active" : "btn btn-outline-primary"} onClick={() => paginate(number)} key={number}>
                                 {number}
                             </button>
-                        </li>
                     ))
                 }
-                <li className={currentPage===pageNumbers[pageNumbers.length - 1]  ? "page-item disabled":"page-item"}>
-                    <button
-                        className='btn page-link'
-                        onClick={nextPage}
-                    >
-                        Next
-                    </button>
-                </li>
-            </ul>
+                <button
+                    type="button"
+                    onClick={ nextPage }
+                    className= {currentPage===pageNumbers[pageNumbers.length - 1] ? "btn btn-outline-primary disabled" : "btn btn-outline-primary" }
+                >
+                    Next
+                </button>
+                <button
+                    type="button"
+                    onClick={ lastPage }
+                    className= {currentPage===pageNumbers[pageNumbers.length - 1] ? "btn btn-outline-primary disabled" : "btn btn-outline-primary" }
+                >
+                    Last
+                </button>
+            </div>
         </div>
   )
 }
