@@ -8,6 +8,7 @@ import {
 import './App.css';
 import Header from "./components/Header";
 import CarList from "./components/CarList";
+import EnhancedTable from "./components/DataTable/EnhancedTable";
 
 
 function App() {
@@ -16,7 +17,7 @@ function App() {
       <Header />
       <Routes>
         <Route exact path="/" element={ <CarList /> } />
-        <Route exact path="/about" element={ <Header /> } />
+        <Route exact path="/about" element={ <EnhancedTable /> } />
         <Route exact path="/contact" element={ <Header /> } />
       </Routes>
     </Router>

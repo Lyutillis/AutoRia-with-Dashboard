@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 
 
@@ -34,10 +33,10 @@ const Pagination = ({ carsPerPage, totalCars, setCurrentPage, currentPage }) => 
 
     useEffect(
         () => {
-            setRightMost(currentPage <= Math.ceil(pageLimit/2) ? 0 : currentPage - Math.ceil(pageLimit/2));
+            setRightMost(currentPage <= Math.ceil(pageLimit/2) ? 0 : Math.min(currentPage - Math.ceil(pageLimit/2), Math.ceil(totalCars/carsPerPage) - pageLimit));
             setLeftMost(currentPage <= Math.ceil(pageLimit/2) ? pageLimit : currentPage + Math.floor(pageLimit/2));
         }
-    , [currentPage])
+    , [currentPage, carsPerPage, totalCars])
     
     return (
         <div className='text-center my-5'>

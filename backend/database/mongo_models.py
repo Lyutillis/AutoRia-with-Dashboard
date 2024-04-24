@@ -32,3 +32,8 @@ class Task(Document):
 class Result(Document):
     task = ReferenceField("Task", reverse_delete_rule=1)
     car = ReferenceField("Car", reverse_delete_rule=1)
+
+
+class User(Document):
+    email = StringField(max_length=255, required=True)
+    hashed_password = StringField(max_length=255, required=True)
