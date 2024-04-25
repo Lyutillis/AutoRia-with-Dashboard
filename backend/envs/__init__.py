@@ -20,6 +20,9 @@ try:
     REDIS_PORT = env.int("REDIS_PORT")
     REDIS_PASSWORD = env.str("REDIS_PASSWORD")
     MONGO_URI = env.str("MONGO_URI")
+    SECRET_KEY = env.str("SECRET_KEY")
+    ALGORITHM = env.str("ALGORITHM")
+    ACCESS_TOKEN_EXPIRE_MINUTES = env.int("ACCESS_TOKEN_EXPIRE_MINUTES")
 
     PAGES = env.int("PAGES")
 

@@ -43,3 +43,11 @@ class Result(Base):
     id = Column(Integer, primary_key=True, index=True)
     task_id = Column(Integer, ForeignKey("task.id"))
     car_id = Column(Integer, ForeignKey("car.id"))
+
+
+class User(Base):
+    __tablename__ = "user"
+
+    id = Column(Integer, primary_key=True, index=True)
+    email = Column(String(255), nullable=False)
+    hashed_password = Column(String(255), nullable=False)

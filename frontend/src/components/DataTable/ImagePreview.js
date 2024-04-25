@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import "./ImagePreview.css";
 
 
 function ImagePreview({ image_url }) {
@@ -10,11 +11,11 @@ function ImagePreview({ image_url }) {
     }
 
     return (
-        <td className="td-image">
+        <div className="td-image">
             <a href={ image_url } className="image-link" onMouseMove={handleImageHover}>Image</a>
 
             <img src={ previewSrc } alt="" className="preview-image" />
-        </td>
+        </div>
     )
 }
 

@@ -97,6 +97,14 @@ class DatabaseABC(abc.ABC):
     def get_task_by_id(self, id: int) -> models.Task:
         pass
 
+    @abc.abstractmethod
+    def get_user(self, email: str) -> models.User:
+        pass
+
+    @abc.abstractmethod
+    def create_user(self, data: schemas.UserCreate) -> models.User:
+        pass
+
 
 class PostgreSQL(DatabaseABC):
 
@@ -227,6 +235,20 @@ class PostgreSQL(DatabaseABC):
                 models.Task.id == id
             ).first()
 
+    def get_user(self, email: str) -> models.User:
+        with self.SessionLocal() as db:
+            return db.query(models.User).filter(email == email).first()
+
+    def create_user(self, email: str, hashed_password: str) -> models.User:
+        with self.SessionLocal() as db:
+            user = models.User(
+                email=email,
+                hashed_password=hashed_password,
+            )
+            db.add(user)
+            db.commit()
+            return db.query(models.User).get(user.id)
+
     @staticmethod
     def create_database_dump() -> None:
         timestamp = datetime.now().strftime("%Y_%m_%d_%H_%M_%S")
@@ -342,6 +364,21 @@ class MongoDB(DatabaseABC):
     def get_task_by_id(self, id: int) -> mongo_models.Task:
         return mongo_models.Task.objects(id=id).first()
 
+    def get_user(self, email: str) -> mongo_models.User:
+        return mongo_models.User.objects(email=email).first()
+
+    def create_user(
+        self,
+        email: str,
+        hashed_password: str
+    ) -> mongo_models.User:
+        user = mongo_models.User(
+            email=email,
+            hashed_password=hashed_password,
+        )
+        user.save()
+        return user
+
     @staticmethod
     def create_database_dump() -> None:
         timestamp = datetime.now().strftime("%Y_%m_%d_%H_%M_%S")
@@ -419,3 +456,13 @@ class DBInterface(DatabaseABC):
 
     def create_database_dump(self) -> None:
         self.db.create_database_dump()
+
+    def get_user(self, email: str) -> models.User:
+        return self.db.get_user(email)
+
+    def create_user(
+        self,
+        email: str,
+        hashed_password: str
+    ) -> mongo_models.User:
+        return self.db.create_user(email, hashed_password)

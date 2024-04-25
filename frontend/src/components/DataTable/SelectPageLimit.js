@@ -1,7 +1,7 @@
 import React from 'react';
 import "./SelectPageLimit.css";
 
-const SelectPageLimit = (setCarsPerPage) => {
+const SelectPageLimit = ({setCarsPerPage}) => {
     const setLimit = (e) => {
         setCarsPerPage(
             parseInt(e.currentTarget.value, 10)

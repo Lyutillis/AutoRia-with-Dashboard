@@ -3,6 +3,7 @@ from typing import List, Literal
 from utils import schemas
 from utils.log import get_logger
 from database.db_layer import DBInterface
+from m_api import auth
 
 
 db_logger = get_logger("Database")
@@ -110,3 +111,23 @@ class ResultDAL(DAL):
                 self.db.get_task_by_id(item.task_id),
                 completed=True
             )
+
+
+class UserDAL(DAL):
+    def get_user(self, email: str) -> schemas.User:
+        db_logger.info("Getting user from database.")
+        user = self.db.get_user(email)
+        if user:
+            return schemas.User(
+                email=user.email,
+                hashed_password=user.hashed_password,
+            )
+
+    def create_user(self, data: schemas.UserCreate) -> schemas.UserBase:
+        user = self.db.create_user(
+            data.email,
+            auth.get_password_hash(data.password)
+        )
+        return schemas.UserBase(
+            user.email
+        )
